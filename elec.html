@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elec</title>
+    <link rel="stylesheet" href="vanilla.css">
+    <link rel="stylesheet" href="elec.css">
+</head>
+
+<body>
+    <h1>Elec</h1>
+    <div id="intro">
+        <p>
+            If you have a smart meter for your electricity, you can request your electricity retailer or wholesaler for
+            the historical data from it.
+            The data is power to and from the grid over regular intervals, such as every 5, 15 or 30 mins
+            and is provided in a CSV file conforming to the NEM12 specification by AMEO.
+        </p>
+        <p>
+            This tool will calculate the power used in each tariff band and the cost under the specified tariffs.
+            It handles fixed and time of use (TOU) tariffs and solar feed-in.
+            All processing is done in your browser and your data never leaves your computer.
+            Click for <a id="openPotentialUses">Potential Uses</a>.
+        </p>
+        <div id="potentialUses" class="jw-modal"><div class="jw-modal-body">
+            <h2>Potential Uses:</h2>
+            <ol>
+                <li>check you are being charged correctly by your retailer;
+                <li>compare alternative tariffs (be sure to treat GST in the same way for all tariffs);
+                <li>learn the sigificance of the different aspects of tariffs:
+                    <ul>
+                        <li>high peak usage may favour a flat tariff and low peak usage may favour a time of use tariff;
+                        <li>low usage may favour accepting higher usage charges in exchange for a lower daily supply charge;
+                        <li>it may be worth accepting lower feed-in tariffs in exchange for minimizing other charges (especially if you can use the power you generate yourself);
+                        <li>a tariff that charges public holidays at Sunday rates may save you less than you might hope (likewise for gimmicks like reward points).
+                    </ul>  
+                </li>
+            </ol>
+        </div></div>
+        <p>
+            The rules for Peak Demand tariffs appear to vary greatly between retailers/wholesalers/states and these are not handled.
+            Peak Demand tariffs are too complex for residential customers generally and never should have been offerred to them, let alone switched to automatically.
+            Avoid them.
+        </p>
+    </div>
+
+    <h2>Tariff</h2>
+    <div id="tariff">
+        <p>
+            You need to provide your tariff information in a CSV (comma separated values) file.
+            You can download and use this <a href="data/redEnergy2024TouTariff.csv" target="_blank">Red Energy 2024 TOU tariff</a> for a demo then modify it for your own tariff.
+            It is mostly self explanatory, but the row labelled "Daily" has a different format from the other rows and warrants further <a id="openDailyExplanation">explanation</a>.
+        </p>
+        <div id="dailyExplanation" class="jw-modal"><div class="jw-modal-body">
+            <h2>Special rules for the "Daily" row in the tariff CSV file:</h2>
+            <ol>
+                <li>Retail tariffs use local time (including daylight savings if in effect), whereas NEM12 files always use AEST (not daylight savings time).
+                    So we need to know the timezone for the tariff so that we can convert from NEM12 AEST to the local time applicable for the tariff. 
+                    The IANA timezone e.g. "Australia/Sydney" is put in the "Time Start" column of the "Daily" row.
+                <li>Some tariffs charge public holidays at Sunday rates (only tariffs which explicitly say so). In this case the 2 or 3 letter state abreviation e.g. "NSW" is put
+                    in the "Time End" column of the "Daily" row.
+                    "N/A" is used if the tariff does not charge public holidays at Sunday rates.
+                    The included public holiday data was sourced from data.gov.au and covers 2021-2025 (inclusive). Unfortunately it is no longer maintained for future years.
+                <li>Finally, the Daily Supply Charge ($/day) is put in the "$/kWh" column of the "Daily" row.
+            </ol>
+        </div></div>
+        <div>
+            <span>Select one or more tariff CSV files: </span>
+            <input type="file" id="tariffFile" accept=".csv" multiple />
+        </div>
+        <div id="tariffDisplay"></div>
+    </div>
+    
+    <h2>Power To and From the Grid</h2>
+    <div id="powerPlaceholder">Select tariffs to enable this section ...</div>
+    <div id="power" class="hidden">
+        <div>
+            <span>Select a NEM12 CSV file: </span>
+            <input type="file" id="powerFile" accept=".csv" />
+        </div>
+        <div id="nem12Display"></div>
+    </div>
+
+    <h2>Charges</h2>
+    <div id="charges"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha512-dfX5uYVXzyU8+KHqj8bjo7UkOdg18PaOtpa48djpNbZHwExddghZ+ZmzWT06R5v6NSk3ZUfsH6FNEDepLx9hPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.6.1/build/global/luxon.min.js" crossorigin="anonymous"></script>
+
+    <script type="module">
+        import { init } from './modules/main.js';
+        init();
+    </script>
+</body>
+
+</html>

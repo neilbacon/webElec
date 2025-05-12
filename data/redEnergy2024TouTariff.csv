@@ -1,0 +1,11 @@
+Label,Day Start (0 for Monday),Day End (Exclusive),Time Start,Time End (Exclusive),$/kWh,Comment
+Off-peak,0,5,00:00,07:00,0.26928,Energy consumed/generated is grouped by these labels - which can be whatever you like 
+Peak,0,5,07:00,09:00,0.41745,
+Shoulder,0,5,09:00,17:00,0.35695,
+Peak,0,5,17:00,20:00,0.41745,
+Shoulder,0,5,20:00,22:00,0.35695,
+Off-peak,0,5,22:00,24:00,0.26928,
+Off-peak,5,7,00:00,24:00,0.26928,
+Feedin,0,7,00:00,24:00,-0.05,negative price for feedin rates, multiple rows are allowed but not usual
+Daily,0,0,Australia/Sydney,N/A,1.45398,Special row : Label must be "Daily" : Timezone : State e.g. "NSW" for public holidays or N/A: Daily supply charge
+
