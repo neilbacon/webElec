@@ -27,6 +27,21 @@ a[target="_blank"]::after {
     display: none;
 }
 
+input[type="file"] {
+    width: 50rem;
+}
+
+input[type="text"] {
+    width: 8rem;
+    border: 1px solid var(--text-color);
+}
+
+input, button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
 /* https://jasonwatmore.com/post/2023/01/04/vanilla-js-css-modal-popup-dialog-tutorial-with-example */
 .jw-modal {
     /* modals are hidden by default */

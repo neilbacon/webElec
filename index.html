@@ -50,7 +50,7 @@
     <div id="tariff">
         <p>
             You need to provide your tariff information in a CSV (comma separated values) file.
-            You can download and use this <a href="data/redEnergy2024TouTariff.csv" target="_blank">Red Energy 2024 TOU tariff</a> for a demo then modify it for your own tariff.
+            You can download and use this <a href="data/redEnergy2024TouTariff.csv" >Red Energy 2024 TOU tariff (GST included)</a> for a demo then modify it for your own tariff.
             It is mostly self explanatory, but the row labelled "Daily" has a different format from the other rows and warrants further <a id="openDailyExplanation">explanation</a>.
         </p>
         <div id="dailyExplanation" class="jw-modal"><div class="jw-modal-body">
@@ -80,8 +80,21 @@
             <span>Select a NEM12 CSV file: </span>
             <input type="file" id="powerFile" accept=".csv" />
         </div>
-        <div id="nem12Display"></div>
     </div>
+    <div id="nem12Summary" class="hidden">
+        <div>
+            Data for NMI 
+            <span id="nem"></span>
+            from 
+            <input type="text" id="fromDate"/>
+            to 
+            <input type="text" id="toDate" /> inclusive.
+        </div>
+        <div>
+            You can narrow the date range then: <button id="filterDateRange">Filter</button> or <button id="resetDateRange">Reset</button>
+        </div>
+    </div>
+    <div id="nem12Display"></div>
 
     <h2>Charges</h2>
     <div id="charges"></div>

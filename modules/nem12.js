@@ -6,22 +6,39 @@
 
 export class Nem12 {
 
-    constructor(tariffs) {
-        this.tariffs = tariffs;
+    constructor() {
+        this.reset([]);
+    }
+
+    reset(tariffs) {
+        if (typeof tariffs !== "undefined") this.tariffs = tariffs; // missing arg keeps the old tariffs
         this.rec100 = null;
         this.rec200 = null;
         this.rec300 = null;
         this.rec400 = null;
         this.minDate = "99999999";
         this.maxDate = "00000000";
+        this.tariffs.forEach(t => t.clearResult());
+        this.resetDateFilter();
+   }
+
+    resetDateFilter() {
+        this.setDateFilter("00000000", "99999999");
+    }
+
+    setDateFilter(start, end) {
+        this.filterMinDate = start;
+        this.filterMaxDate = end;
     }
 
     applyTariffs() {
-        const isGeneration = this.rec200.registerId.startsWith("B"); // else Consumption
         const date = this.rec300.intervalDate.toString(); // YYYYMMDD
-        if (date < this.minDate) this.minDate = date;
-        if (date > this.maxDate) this.maxDate = date;
-        this.tariffs.forEach(t => t.applyTariff(isGeneration, date, this.rec200.intervalMinutes, this.rec300.readings));
+        if (date >= this.filterMinDate && date <= this.filterMaxDate) {
+            const isGeneration = this.rec200.registerId.startsWith("B"); // else Consumption
+            if (date < this.minDate) this.minDate = date;
+            if (date > this.maxDate) this.maxDate = date;
+            this.tariffs.forEach(t => t.applyTariff(isGeneration, date, this.rec200.intervalMinutes, this.rec300.readings));
+        }
     }
 
     row(row) {
