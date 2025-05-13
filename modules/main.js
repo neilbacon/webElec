@@ -49,13 +49,7 @@ function initHolidays(cb) {
     return holidays;
 }
 
-function hidePower() {
-    id('powerPlaceholder').classList.remove('hidden');
-    id('power').classList.add('hidden');
-}
-
-
-const fmtPower = v => v.toLocaleString(undefined, { maximumFractionDigits: 0 });
+const fmtPower = v => v.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 });
 const fmtPrice = v => v.toLocaleString(undefined, { style: 'currency', currency: 'AUD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const fmtPricePrecise = v => v.toLocaleString(undefined, { style: 'currency', currency: 'AUD', minimumFractionDigits: 5, maximumFractionDigits: 5 });
 const fmtDay = x => [ "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Following Mon", "Invalid" ][Math.min(Math.abs(x), 8)];
